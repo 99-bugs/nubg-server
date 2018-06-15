@@ -1,0 +1,22 @@
+{
+  "name": "nubg-server",
+  "version": "0.1.0",
+  "description": "Not a Universal Battle Ground Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/99-bugs/nubg-server"
+  },
+  "keywords": [
+    "robot",
+    "wars",
+    "battle",
+    "ground",
+    "mqtt"
+  ],
+  "author": "99-bugs",
+  "license": "MIT"
+}
