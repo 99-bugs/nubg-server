@@ -18,5 +18,8 @@
     "mqtt"
   ],
   "author": "99-bugs",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "async-mqtt": "^1.0.1"
+  }
 }
