@@ -30,11 +30,11 @@ var game = new Game();
 
 var bio = new Player("BioBoost");
 var littletank = new Tank("My Little Tank", bio);
-game.add_tank(littletank);
+game.spawn_tank(littletank);
 
 var sille = new Player("LittleWAN");
 var duke = new Tank("Tha DUKE", sille);
-game.add_tank(littletank);
+game.spawn_tank(littletank);
 
 function publish_game_state(client) {
   client.publish(GAMESTATE_TOPIC, game.game_state());
@@ -56,7 +56,7 @@ client.on('message', function (topic, message) {
   if (topic === JOIN_TOPIC) {
     let tank = TankFactory.from_json(message.toString());
     logger.info("Player " + tank.driver.nickname + " joining the game");
-    game.add_tank(tank);
+    game.spawn_tank(tank);
     publish_game_state(client);
   } else {
     logger.debug("Received invalid or unknown message via MQTT");
