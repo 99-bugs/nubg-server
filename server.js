@@ -23,7 +23,7 @@ var Game = require('./lib/game');
 var TankFactory = require('./lib/factories/tank_factory');
 
 let JOIN_TOPIC = "test/nubg/join";
-let GAMESTATE_TOPIC = "test/nubg/gamestate";
+let GAMESTATE_TOPIC = "test/nubg/devgame/gamestate";
 
 // Create game and add some tanks
 var game = new Game();
