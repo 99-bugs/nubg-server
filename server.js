@@ -34,7 +34,7 @@ game.spawn_tank(littletank);
 
 var sille = new Player("LittleWAN");
 var duke = new Tank("Tha DUKE", sille);
-game.spawn_tank(littletank);
+game.spawn_tank(duke);
 
 function publish_game_state(client) {
   client.publish(GAMESTATE_TOPIC, game.game_state());
