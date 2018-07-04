@@ -37,7 +37,8 @@ var duke = new Tank("Tha DUKE", sille);
 game.spawn_tank(duke);
 
 function publish_game_state(client) {
-  client.publish(GAMESTATE_TOPIC, JSON.stringify(game.game_state()));
+  let options = {retain: true};
+  client.publish(GAMESTATE_TOPIC, JSON.stringify(game.game_state()), options);
   logger.debug("Publishing game state: " + JSON.stringify(game.game_state()));
 }
 
