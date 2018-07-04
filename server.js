@@ -37,8 +37,8 @@ var duke = new Tank("Tha DUKE", sille);
 game.spawn_tank(duke);
 
 function publish_game_state(client) {
-  client.publish(GAMESTATE_TOPIC, game.game_state());
-  logger.debug("Publishing game state: " + game.game_state());
+  client.publish(GAMESTATE_TOPIC, JSON.stringify(game.game_state()));
+  logger.debug("Publishing game state: " + JSON.stringify(game.game_state()));
 }
 
 var mqtt = require('mqtt');
