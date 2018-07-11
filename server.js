@@ -17,9 +17,8 @@ const logger = winston.createLogger({
   ], level: 'debug'
 });
 
-var Tank = require('./lib/tank');
-var Player = require('./lib/player');
-var Game = require('./lib/game');
+var Tank = require('./lib/Tank');
+var Game = require('./lib/Game');
 var TankFactory = require('./lib/factories/tank_factory');
 
 let JOIN_TOPIC = "test/nubg/join";
@@ -28,18 +27,16 @@ let GAMESTATE_TOPIC = "test/nubg/devgame/gamestate";
 // Create game and add some tanks
 var game = new Game();
 
-var bio = new Player("BioBoost");
-var littletank = new Tank("My Little Tank", bio);
-game.spawn_tank(littletank);
+var littletank = new Tank("My Little Tank");
+game.tankManager.spawn(littletank);
 
-var sille = new Player("LittleWAN");
-var duke = new Tank("Tha DUKE", sille);
-game.spawn_tank(duke);
+var duke = new Tank("Tha DUKE");
+game.tankManager.spawn(duke);
 
 function publish_game_state(client) {
   let options = {retain: true};
-  client.publish(GAMESTATE_TOPIC, JSON.stringify(game.game_state()), options);
-  logger.debug("Publishing game state: " + JSON.stringify(game.game_state()));
+  client.publish(GAMESTATE_TOPIC, JSON.stringify(game.getState()), options);
+  logger.debug("Publishing game state: " + JSON.stringify(game.getState()));
 }
 
 var mqtt = require('mqtt');
@@ -56,8 +53,8 @@ client.on('message', function (topic, message) {
 
   if (topic === JOIN_TOPIC) {
     let tank = TankFactory.from_json(message.toString());
-    logger.info("Player " + tank.driver.nickname + " joining the game");
-    game.spawn_tank(tank);
+    logger.info(`Player ${tank.name} (${tank.id}) joining the game`);
+    game.tankManager.spawn(tank);
     publish_game_state(client);
   } else {
     logger.debug("Received invalid or unknown message via MQTT");
