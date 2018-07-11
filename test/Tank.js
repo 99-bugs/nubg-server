@@ -63,4 +63,22 @@ describe('Tank', () => {
     tank.location.y.should.be.closeTo(1000 - 70.710, 0.001);
   });
 
+  it('can turn counter clock wise', () => {
+    let tank = new Tank("John", {direction: 0});
+    tank.turn(-90);
+    tank.direction.should.be.equal(-90);
+  });
+
+  it('can turn clock wise with overflow', () => {
+    let tank = new Tank("John", {direction: 270});
+    tank.turn(180);
+    tank.direction.should.be.equal(90);
+  });
+
+  it('can turn counter clock wise with overflow', () => {
+    let tank = new Tank("John", {direction: 90});
+    tank.turn(-180);
+    tank.direction.should.be.equal(-90);
+  });
+
 });
