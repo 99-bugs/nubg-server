@@ -1,4 +1,5 @@
 let assert = require('assert');
+let should = require('chai').should()
 let Tank = require('../lib/Tank');
 
 
@@ -39,6 +40,27 @@ describe('Tank', () => {
   it('has a default health power of 100', () => {
     let tank = new Tank("John");
     assert.equal(tank.hp, 100);
+  });
+
+  it('can drive 100 north', () => {
+    let tank = new Tank("John", {location: {x: 1000, y: 1000}});
+    tank.drive(100);
+    assert.equal(tank.location.x, 1000);
+    assert.equal(tank.location.y, 900);
+  });
+
+  it('can drive 100 east', () => {
+    let tank = new Tank("John", {location: {x: 1000, y: 1000}, direction: 90});
+    tank.drive(100);
+    assert.equal(tank.location.x, 1100);
+    assert.equal(tank.location.y, 1000);
+  });
+
+  it('can drive 100 north east', () => {
+    let tank = new Tank("John", {location: {x: 1000, y: 1000}, direction: 45});
+    tank.drive(100);
+    tank.location.x.should.be.closeTo(1000 + 70.710, 0.001);
+    tank.location.y.should.be.closeTo(1000 - 70.710, 0.001);
   });
 
 });
