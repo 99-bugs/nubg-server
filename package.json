@@ -18,5 +18,9 @@
     "mqtt"
   ],
   "author": "99-bugs",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "auth0mosca": "^0.1.0",
+    "mosca": "^2.8.2"
+  }
 }
