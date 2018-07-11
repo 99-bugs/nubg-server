@@ -1,4 +1,10 @@
 let assert = require('assert');
+// let expect = require('chai').expect;
+
+let chai = require("chai");
+chai.should();
+chai.use(require('chai-things'));
+
 let TankManager = require('../lib/TankManager');
 let Tank = require('../lib/Tank');
 
@@ -29,7 +35,19 @@ describe('TankManager', () => {
     let tank = { name: 'John' };
     tm.spawn(tank);
     assert.equal(tm.getTank(tank.id), tank);
-  })
+  });
+
+  it('can report the state of all tanks', () => {
+    let tm = new TankManager();
+    let tanks = [new Tank('John'), new Tank('Doe')];
+
+    for(let tank of tanks) {
+      tm.spawn(tank);
+    }
+    let state = tm.getState();
+    state.should.be.an('array');
+    state.should.contain.an.item.with.property('id');
+  });
 
   describe('Tank commands', () => {
     // it('must contain an existing tank id', () => {
