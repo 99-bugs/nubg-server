@@ -81,4 +81,17 @@ describe('Tank', () => {
     tank.direction.should.be.equal(-90);
   });
 
+  it('can report its state', () => {
+    let tank = new Tank("John", {
+      location: {x: 1000, y: 2000}, 
+      direction: 45
+    });
+    let state = tank.getState();
+    state.name.should.be.equal('John');
+    state.location.x.should.be.equal(1000);
+    state.location.y.should.be.equal(2000);
+    state.direction.should.be.equal(45);
+    state.id.should.be.equal('5753a498f025464d72e088a9d5d6e872592d5f91');
+  });
+
 });
