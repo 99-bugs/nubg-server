@@ -1,5 +1,7 @@
 var winston = require('winston');
 
+let mqttWildcard = require('mqtt-wildcard');
+
 const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, printf } = format;
  
@@ -23,6 +25,7 @@ var TankFactory = require('./lib/factories/tank_factory');
 
 let JOIN_TOPIC = "test/nubg/join";
 let GAMESTATE_TOPIC = "test/nubg/devgame/gamestate";
+let UPDATE_TOPIC = 'test/nubg/devgame/update/+';
 
 // Create game and add some tanks
 var game = new Game();
@@ -45,6 +48,7 @@ var client = mqtt.connect("tcp://mqtt.labict.be:1883");
 client.on('connect', function () {
   logger.info("Connected to broker");
   client.subscribe(JOIN_TOPIC);
+  client.subscribe(UPDATE_TOPIC);
   publish_game_state(client);
 });
  
@@ -56,6 +60,11 @@ client.on('message', function (topic, message) {
     logger.info(`Player ${tank.name} (${tank.id}) joining the game`);
     game.tankManager.spawn(tank);
     publish_game_state(client);
+  } else if (mqttWildcard(topic, UPDATE_TOPIC)) {
+    let id = mqttWildcard(topic, UPDATE_TOPIC)
+    let update = {id: id}; 
+    // TODO....
+    logger.info(`Update received for ${update.id}`);
   } else {
     logger.debug("Received invalid or unknown message via MQTT");
   }
@@ -79,3 +88,4 @@ process.on("SIGINT", function () {
   client.end();
   process.exit();
 });
+
