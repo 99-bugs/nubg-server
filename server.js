@@ -25,7 +25,7 @@ var TankFactory = require('./lib/factories/tank_factory');
 
 let JOIN_TOPIC = "test/nubg/join";
 let GAMESTATE_TOPIC = "test/nubg/devgame/gamestate";
-let UPDATE_TOPIC = 'test/nubg/devgame/update/+';
+let UPDATE_TOPIC = 'test/nubg/devgame/update';
 
 // Create game and add some tanks
 var game = new Game();
@@ -58,9 +58,12 @@ client.on('message', function (topic, message) {
   if (topic === JOIN_TOPIC) {
     let tank = TankFactory.from_json(message.toString());
     logger.info(`Player ${tank.name} (${tank.id}) joining the game`);
-    game.tankManager.spawn(tank);
-    publish_game_state(client);
-  } else if (mqttWildcard(topic, UPDATE_TOPIC)) {
+    if(game.tankManager.spawn(tank)) {
+      publish_game_state(client);
+    } else  {
+      logger.info(`Unable to spawn tank: ${tank.name}`)
+    }
+  } else if (topic === UPDATE_TOPIC) {
     let id = mqttWildcard(topic, UPDATE_TOPIC)
     let update = {id: id}; 
     // TODO....
