@@ -1,7 +1,5 @@
 var winston = require('winston');
 
-let mqttWildcard = require('mqtt-wildcard');
-
 const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, printf } = format;
  
