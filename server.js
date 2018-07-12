@@ -32,10 +32,10 @@ let JWTSECRET = '484074319837639265922729358538';
 // Create game and add some tanks
 var game = new Game();
 
-var littletank = new Tank("My Little Tank");
+var littletank = new Tank("My Little Tank", { location: { x: (Math.random() * 700) + 50 , y: (Math.random() * 500) + 50}, direction: Math.random() * 360 });
 game.tankManager.spawn(littletank);
 
-var duke = new Tank("Tha DUKE");
+var duke = new Tank("Tha DUKE", { location: { x: (Math.random() * 700) + 50 , y: (Math.random() * 500) + 50}, direction: Math.random() * 360 });
 game.tankManager.spawn(duke);
 
 function publish_game_state(client) {
