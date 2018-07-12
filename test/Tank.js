@@ -81,6 +81,12 @@ describe('Tank', () => {
     tank.direction.should.be.equal(-90);
   });
 
+  it('can turn clock wise with overflow at 180 degrees', () => {
+    let tank = new Tank("John", {direction: 170});
+    tank.turn(20);
+    tank.direction.should.be.equal(-170);
+  });
+
   it('can report its state', () => {
     let tank = new Tank("John", {
       location: {x: 1000, y: 2000}, 
