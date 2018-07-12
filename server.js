@@ -1,5 +1,7 @@
 var winston = require('winston');
 
+var jwt = require('jsonwebtoken');
+
 const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, printf } = format;
  
@@ -24,6 +26,8 @@ var TankFactory = require('./lib/factories/tank_factory');
 let JOIN_TOPIC = "test/nubg/join";
 let GAMESTATE_TOPIC = "test/nubg/devgame/gamestate";
 let UPDATE_TOPIC = 'test/nubg/devgame/update';
+
+let JWTSECRET = '484074319837639265922729358538';
 
 // Create game and add some tanks
 var game = new Game();
@@ -58,14 +62,24 @@ client.on('message', function (topic, message) {
     logger.info(`Player ${tank.name} (${tank.id}) joining the game`);
     if(game.tankManager.spawn(tank)) {
       publish_game_state(client);
+      let token = jwt.sign({ name: tank.name, tank_id: tank.id , game_id: 'devgame'}, JWTSECRET);
+      logger.info(`JWT token for ${tank.name}: ${token}`);
     } else  {
-      logger.info(`Unable to spawn tank: ${tank.name}`)
+      logger.info(`Unable to spawn tank: ${tank.name}`);
     }
   } else if (topic === UPDATE_TOPIC) {
-    let id = mqttWildcard(topic, UPDATE_TOPIC)
-    let update = {id: id}; 
-    // TODO....
-    logger.info(`Update received for ${update.id}`);
+    let msg = JSON.parse(message);
+    try {
+      var decoded = jwt.verify(msg.token, JWTSECRET);
+      logger.debug(`JWT Token content: ${JSON.stringify(decoded)}`);
+      logger.info(`Update received for ${msg.id}`);
+      game.tankManager.commandTank(decoded.tank_id, msg);
+      publish_game_state(client);
+    } catch(err) {
+      logger.debug('Wrong JWT token found in update');
+      logger.debug(err);
+    }
+
   } else {
     logger.debug("Received invalid or unknown message via MQTT");
   }
