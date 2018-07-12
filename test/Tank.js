@@ -66,7 +66,7 @@ describe('Tank', () => {
   it('can turn counter clock wise', () => {
     let tank = new Tank("John", {direction: 0});
     tank.turn(-90);
-    tank.direction.should.be.equal(-90);
+    tank.direction.should.be.equal(270);
   });
 
   it('can turn clock wise with overflow', () => {
@@ -78,13 +78,13 @@ describe('Tank', () => {
   it('can turn counter clock wise with overflow', () => {
     let tank = new Tank("John", {direction: 90});
     tank.turn(-180);
-    tank.direction.should.be.equal(-90);
+    tank.direction.should.be.equal(270);
   });
 
   it('can turn clock wise with overflow at 180 degrees', () => {
-    let tank = new Tank("John", {direction: 170});
+    let tank = new Tank("John", {direction: 350});
     tank.turn(20);
-    tank.direction.should.be.equal(-170);
+    tank.direction.should.be.equal(10);
   });
 
   it('can report its state', () => {
