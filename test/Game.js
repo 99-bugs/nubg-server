@@ -15,7 +15,7 @@ describe('Game', () => {
         it('should return the name in the gamestate object', () => {
             let name = 'game state name';
             let game = new Game({name: name});
-            assert.equal(game.game_state().name, name);
+            assert.equal(game.getState().name, name);
         })
     });
 });
