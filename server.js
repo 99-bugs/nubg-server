@@ -72,7 +72,7 @@ client.on('message', function (topic, message) {
     try {
       var decoded = jwt.verify(msg.token, JWTSECRET);
       logger.debug(`JWT Token content: ${JSON.stringify(decoded)}`);
-      logger.info(`Update received for ${msg.id}`);
+      logger.info(`Update received for ${decoded.tank_id}`);
       game.tankManager.commandTank(decoded.tank_id, msg);
       publish_game_state(client);
     } catch(err) {
